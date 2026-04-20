@@ -5,20 +5,15 @@
     <title>CSU学位论文</title>
     <id>http://www.zotero.org/styles/csu学位论文</id>
     <link href="http://www.zotero.org/styles/csu学位论文" rel="self"/>
-    <link href="http://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A" rel="documentation"/>
+    <link href="https://std.samr.gov.cn/gb/search/gbDetailed?id=4507EFE13D37CB6AE06397BE0A0A601F" rel="documentation"/>
     <author>
       <name>Weiers</name>
       <email>chenlei_qaq@qq.com</email>
     </author>
-    <contributor>
-      <name>Zeping Lee</name>
-      <email>zepinglee@gmail.com</email>
-    </contributor>
     <category citation-format="numeric"/>
     <category field="generic-base"/>
-    <summary>China National Standard GB/T 7714-2015 (numeric, En, No DOI\URL\OL)</summary>
-    <updated>2025-01-10T02:58:40+00:00</updated>
-    <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
+    <summary>China National Standard GB/T 7714-2025 (numeric, En, No DOI\URL\OL)</summary>
+    <updated>2025-04-20T02:58:40+00:00</updated>
   </info>
   <locale xml:lang="zh">
     <date form="text">
@@ -203,10 +198,10 @@
   <macro name="container-contributors">
     <names variable="editor">
       <name>
-      <!-- 姓氏大写 -->
-      <name-part name="family" text-case="uppercase"/>
-      <!-- 名字的首字母大写 -->
-      <name-part name="given" form="short" text-case="capitalize-first"/>
+        <!-- 姓氏大写 -->
+        <name-part name="family" text-case="uppercase"/>
+        <!-- 名字的首字母大写 -->
+        <name-part name="given" form="short" text-case="capitalize-first"/>
       </name>
       <institution/>
       <substitute>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE style>
 <style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text" names-delimiter=". " name-as-sort-order="all" sort-separator=" " demote-non-dropping-particle="never" initialize-with=" " initialize-with-hyphen="false" page-range-format="expanded" default-locale="zh-CN">
   <info>
     <title>CSU学位论文_网络首发</title>
@@ -9,10 +10,6 @@
       <name>Weiers</name>
       <email>chenlei_qaq@qq.com</email>
     </author>
-    <contributor>
-      <name>Zeping Lee</name>
-      <email>zepinglee@gmail.com</email>
-    </contributor>
     <category citation-format="numeric"/>
     <category field="generic-base"/>
     <summary>China National Standard GB/T 7714-2015 (numeric, En, online-first journal supported, No DOI)</summary>
