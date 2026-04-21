@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+CSU学位论文参考文献CSL样式
+适配GB/T 7714-2025标准，适用于Zotero等文献管理器。
+本文件结构：
+1. <info>：样式元信息
+2. <locale>：本地化设置
+3. <macro>：各功能宏定义
+4. <citation>：正文引用格式
+5. <bibliography>：参考文献表格式
+-->
 <style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text" names-delimiter=". " name-as-sort-order="all" sort-separator=" " demote-non-dropping-particle="never" initialize-with=" " initialize-with-hyphen="false" page-range-format="expanded" default-locale="zh-CN">
-  <!-- This style was edited with the Visual CSL Editor (https://editor.citationstyles.org/visualEditor/) -->
+  <!--
+    info区块：定义样式名称、作者、更新时间、标准等元信息。
+    供Zotero等工具识别样式来源和用途。
+  -->
   <info>
-    <title>CSU学位论文</title>
-    <id>http://www.zotero.org/styles/csu学位论文</id>
-    <link href="http://www.zotero.org/styles/csu学位论文" rel="self"/>
+    <title>CSU学位论文GB2025</title>
+    <id>http://www.zotero.org/styles/csu学位论文GB2025</id>
+    <link href="http://www.zotero.org/styles/csu学位论文GB2025" rel="self"/>
     <link href="https://std.samr.gov.cn/gb/search/gbDetailed?id=4507EFE13D37CB6AE06397BE0A0A601F" rel="documentation"/>
     <author>
       <name>Weiers</name>
@@ -13,13 +26,26 @@
     <category citation-format="numeric"/>
     <category field="generic-base"/>
     <summary>China National Standard GB/T 7714-2025 (numeric, En, No DOI\URL\OL)</summary>
-    <updated>2025-04-20T02:58:40+00:00</updated>
+    <updated>2026-04-20T02:58:40+00:00</updated>
   </info>
+  <!--locale区块：设置默认格式时间2026-04-20；页码10-11-->
+  <locale>
+    <date form="numeric">
+      <date-part name="year"/>
+      <date-part name="month" form="numeric-leading-zeros" prefix="-"/>
+      <date-part name="day" form="numeric-leading-zeros" prefix="-"/>
+    </date>
+    <terms>
+      <term name="page-range-delimiter">-</term>
+    </terms>
+  </locale>
+
+  <!--locale区块（中文）：中文标识zh；2026年4月20日；页码10-11-->
   <locale xml:lang="zh">
     <date form="text">
-      <date-part name="year" suffix="年" range-delimiter="&#8212;"/>
-      <date-part name="month" form="numeric" suffix="月" range-delimiter="&#8212;"/>
-      <date-part name="day" suffix="日" range-delimiter="&#8212;"/>
+      <date-part name="year" suffix="年"/>
+      <date-part name="month" suffix="月"/>
+      <date-part name="day" suffix="日"/>
     </date>
     <terms>
       <term name="edition" form="short">版</term>
@@ -29,21 +55,13 @@
       <term name="close-inner-quote">’</term>
     </terms>
   </locale>
-  <locale>
-    <date form="numeric">
-      <date-part name="year" range-delimiter="/"/>
-      <date-part name="month" form="numeric-leading-zeros" prefix="-" range-delimiter="/"/>
-      <date-part name="day" form="numeric-leading-zeros" prefix="-" range-delimiter="/"/>
-    </date>
-    <terms>
-      <term name="page-range-delimiter">-</term>
-    </terms>
-  </locale>
-  <!-- 主要责任者 -->
+
+  <!--author宏： 处理作者姓名-->
   <macro name="author">
     <names variable="author">
       <name>
-        <name-part name="family" text-case="uppercase"/>
+        <!--作者姓氏全部大写改成仅首字母大写 text-case="uppercase"-->
+        <name-part name="family" text-case="capitalize-first"/>
       </name>
       <institution/>
       <substitute>
@@ -58,7 +76,7 @@
       </substitute>
     </names>
   </macro>
-  <!-- 题名 -->
+  <!--title宏：处理文献题名-->
   <macro name="title">
     <group delimiter=", ">
       <group delimiter=": ">
@@ -100,7 +118,7 @@
       <text macro="medium-id"/>
     </group>
   </macro>
-  <!-- 书籍的卷号（“第 x 卷”或“第 x 册”） -->
+  <!--volume宏：处理卷号、期号等信息的显示-->
   <macro name="volume">
     <choose>
       <if type="article article-journal article-magazine article-newspaper periodical" match="none">
@@ -118,7 +136,7 @@
       </if>
     </choose>
   </macro>
-  <!-- 文献类型标识 -->
+  <!--type-id宏：输出文献类型标识（如 J、M、D）-->
   <macro name="type-id">
     <choose>
       <if type="article bill collection hearing legal_case legislation personal_communication regulation treaty" match="any">
@@ -151,6 +169,9 @@
       <else-if type="post post-weblog webpage" match="any">
         <text value="EB"/>
       </else-if>
+      <else-if type="preprint">
+        <text value="PP"/>
+      </else-if>
       <else-if type="report">
         <text value="R"/>
       </else-if>
@@ -168,38 +189,49 @@
       </else>
     </choose>
   </macro>
-  <!-- 文献载体标识 -->
+  <!--medium-id宏：输出载体类型（如[J/OL]）-->
   <macro name="medium-id">
     <choose>
-      <if type="dataset post post-weblog software webpage" match="any">
-        <!-- 仅当纯电子资源显示 URL 时才出现“OL” -->
+      <!-- 期刊：无卷期、无期号、有 URL → 输出 OL -->
+      <if type="article-journal article-magazine periodical" match="any">
+        <choose>
+          <if variable="volume issue" match="none">
+            <if variable="URL">
+              <text value="OL"/>
+            </if>
+          </if>
+        </choose>
+      </if>
+      <!-- 其他电子资源（网页、数据集等）有 URL 就输出 OL -->
+      <else-if variable="URL">
         <choose>
           <if variable="medium">
             <text variable="medium"/>
           </if>
-          <else-if variable="URL">
+          <else>
             <text value="OL"/>
-          </else-if>
+          </else>
         </choose>
-      </if>
+      </else-if>
     </choose>
   </macro>
-  <!-- 其他责任者 -->
+  <!--secondary-contributors宏：处理次要贡献者（如编者、译者）-->
   <macro name="secondary-contributors">
     <names variable="translator">
       <name>
-        <name-part name="family" text-case="uppercase"/>
+        <!-- 姓氏首字母大写 -->
+        <name-part name="family" text-case="capitalize-first"/>
       </name>
       <institution/>
       <label form="short" prefix=", "/>
     </names>
   </macro>
-  <!-- 专著主要责任者 -->
+  <!--container-contributors宏：处理期刊、丛书等容器作者-->
   <macro name="container-contributors">
     <names variable="editor">
       <name>
-        <!-- 姓氏大写 -->
-        <name-part name="family" text-case="uppercase"/>
+        <!-- 姓氏首字母大写 -->
+        <name-part name="family" text-case="capitalize-first"/>
         <!-- 名字的首字母大写 -->
         <name-part name="given" form="short" text-case="capitalize-first"/>
       </name>
@@ -211,7 +243,7 @@
       </substitute>
     </names>
   </macro>
-  <!-- 专著题名 -->
+  <!--container-booklike宏：输出书籍类容器信息-->
   <macro name="container-booklike">
     <group delimiter=". ">
       <text macro="container-contributors"/>
@@ -239,7 +271,7 @@
       </group>
     </group>
   </macro>
-  <!-- 连续出版物中的出处项 -->
+  <!--container-periodical宏：输出期刊类容器信息-->
   <macro name="container-periodical">
     <choose>
       <if type="article-newspaper">
@@ -251,36 +283,49 @@
         <text variable="page" prefix="(" suffix=")"/>
       </if>
       <else>
-        <!-- 期刊、杂志的出处项：“刊名, 年, 卷(期): 页码[引用日期]” -->
-        <group delimiter=": ">
-          <group>
+        <!-- 期刊表示 -->
+        <Choose>
+          <!-- 无卷期且无期号 → 网络首发 -->
+          <if variable="volume issue" match="none">
             <group delimiter=", ">
               <text variable="container-title"/>
-              <text macro="issued-year"/>
-              <text variable="volume"/>
+              <text variable="page"/>
             </group>
-            <text variable="issue" prefix="(" suffix=")"/>
-          </group>
-          <text variable="page"/>
-        </group>
+            <text macro="accessed-date"/>
+          </if>
+          <!-- 有卷期或期号 → 正式出版 -->
+          <else>
+            <group delimiter=": ">
+              <group>
+                <group delimiter=", ">
+                  <text variable="container-title"/>
+                  <text macro="issued-year"/>
+                  <text variable="volume"/>
+                </group>
+                <text variable="issue" prefix="(" suffix=")"/>
+              </group>
+              <text variable="page"/>
+            </group>
+          </else>
+        </Choose>
       </else>
     </choose>
   </macro>
-  <!-- 版本项 -->
-  <macro name="edition">
-    <choose>
-      <if is-numeric="edition">
-        <group delimiter=" ">
-          <number variable="edition" form="ordinal"/>
-          <label variable="edition" form="short"/>
-        </group>
-      </if>
-      <else>
+  <!--edition宏：输出版本信息（如第2版）-->
+<macro name="edition">
+  <choose>
+    <if is-numeric="edition">
+      <group delimiter="">
         <text variable="edition"/>
-      </else>
-    </choose>
-  </macro>
-  <!-- 连续出版物的年卷期 -->
+        <label variable="edition" form="short"/>
+      </group>
+    </if>
+    <else>
+      <text variable="edition"/>
+    </else>
+  </choose>
+</macro>
+  <!--year-volume-issue宏：输出出版年、卷、期、页码等-->
   <macro name="year-volume-issue">
     <group delimiter=", ">
       <text macro="issued-year"/>
@@ -288,7 +333,7 @@
     </group>
     <text variable="issue" prefix="(" suffix=")"/>
   </macro>
-  <!-- 出版项 -->
+  <!--publisher宏：输出出版单位信息，如出版社、出版地等-->
   <macro name="publisher">
     <choose>
       <if type="patent">
@@ -344,7 +389,7 @@
       </else>
     </choose>
   </macro>
-  <!-- 出版年 -->
+  <!--issued-year宏：输出出版年份-->
   <macro name="issued-year">
     <choose>
       <if variable="issued">
@@ -364,33 +409,60 @@
       </else>
     </choose>
   </macro>
-  <!-- 出版日期，用于报纸文献、专利的“公告日期或公开日期”、电子资源的“更新或修改日期” -->
+  <!--issued-date宏：输出完整出版日期（年-月-日）-->
   <macro name="issued-date">
     <date variable="issued" form="numeric"/>
   </macro>
-  <!-- 引用日期 -->
-  <macro name="accessed-date">
-    <choose>
-      <if type="dataset post post-weblog software webpage" match="any">
-        <!-- 仅当纯电子资源显示 URL 时才出现引用日期 -->
-        <choose>
+  <!--accessed-date宏：输出访问日期，主要用于电子资源-->
+<macro name="accessed-date">
+  <choose>
+    <!-- 网络首发期刊：无卷期且有 URL -->
+    <if type="article-journal article-magazine periodical" match="any">
+      <choose>
+        <if variable="volume issue" match="none">
           <if variable="URL">
             <date variable="accessed" form="numeric" prefix="[" suffix="]"/>
           </if>
-        </choose>
-      </if>
-    </choose>
-  </macro>
-  <!-- 获取和访问路径、数字对象唯一标识符 -->
+        </if>
+      </choose>
+    </if>
+    <!-- 其他需要引用日期的类型：网页、数据集、预印本 -->
+    <else-if type="dataset post post-weblog software webpage preprint" match="any">
+      <choose>
+        <if variable="URL">
+          <date variable="accessed" form="numeric" prefix="[" suffix="]"/>
+        </if>
+      </choose>
+    </else-if>
+  </choose>
+</macro>
+  <!--access宏：输出电子资源的URL和访问日期-->
   <macro name="access">
-    <choose>
-      <if type="dataset post post-weblog software webpage" match="any">
-        <!-- 仅纯电子资源显示 URL -->
+  <choose>
+    <!-- 网络首发期刊：无卷期且有 URL -->
+    <if type="article-journal article-magazine periodical" match="any">
+      <choose>
+        <if variable="volume issue" match="none">
+          <if variable="URL">
+            <group delimiter=" ">
+              <text variable="URL"/>
+              <text variable="DOI" prefix="DOI:"/>
+            </group>
+          </if>
+        </if>
+      </choose>
+    </if>
+    <!-- 其他电子资源 -->
+    <else-if variable="URL">
+      <group delimiter=" ">
         <text variable="URL"/>
-      </if>
-    </choose>
-  </macro>
-  <!-- 参考文献表格式 -->
+        <text variable="DOI" prefix="DOI:"/>
+      </group>
+    </else-if>
+  </choose>
+</macro>
+  <!--entry-layout宏：定义单条参考文献的整体排版结构。
+    调用各子宏，组合成完整条目-->
   <macro name="entry-layout">
     <group delimiter=". ">
       <text macro="author"/>
@@ -439,6 +511,7 @@
       <text macro="access"/>
     </group>
   </macro>
+  <!--citation区块：定义正文中引用的格式如上标、方括号、逗号分隔等-->
   <citation collapse="citation-number" after-collapse-delimiter=",">
     <sort>
       <key variable="citation-number"/>
@@ -447,6 +520,8 @@
       <text variable="citation-number"/>
     </layout>
   </citation>
+  <!--bibliography区块：定义参考文献表的整体格式。
+    包括编号、作者、题名、出版项等-->
   <bibliography entry-spacing="0" et-al-min="4" et-al-use-first="3" second-field-align="flush">
     <layout locale="en">
       <text variable="citation-number" prefix="[" suffix="]"/>
